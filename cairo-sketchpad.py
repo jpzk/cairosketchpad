@@ -1,5 +1,24 @@
 #!/bin/env python
 
+''' 
+This file is part of cairo-sketchpad.
+
+Copyright 2013, Jendrik Poloczek
+
+cairo-sketchpad is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as published
+by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+cairo-sketchpad is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+cairo-sketchpad.  If not, see <http://www.gnu.org/licenses/>.
+'''
+
 from gi.repository import Gtk, GLib,  Gdk, cairo 
 import math
 import sys
@@ -7,7 +26,7 @@ import time
 import threading
 import os
 
-# Python/Cairo Livecoding in 100 Lines of Code
+# Python/Cairo Live Coding Sketchpad
 
 WATCH_IDLE_TIME = 1
 WIDTH = 600
