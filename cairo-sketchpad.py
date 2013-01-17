@@ -1,7 +1,8 @@
+#!/bin/env python
+
 from gi.repository import Gtk, GLib,  Gdk, cairo 
 import math
 import sys
-import sketch 
 import time
 import threading
 import os
@@ -56,7 +57,7 @@ class GtkApp():
         self._watchthread = WatchThread(self._livecode, filename, self._mod)
 
         window = Gtk.Window()
-        window.set_title ("mini-live on %s" % filename)
+        window.set_title ("cairo-sketchpad on %s" % filename)
         window.add(self._livecode)
         window.show_all()
         window.connect_after('destroy', self._destroy)
@@ -66,12 +67,16 @@ class GtkApp():
         Gtk.main_quit()
 
 def main():
-    GLib.threads_init()
-    gt = GtkApp(sys.argv[1])
-    gt._watchthread.start()
-    Gdk.threads_enter()
-    Gtk.main()
-    Gdk.threads_leave()
+    if(len(sys.argv) < 2):
+        print "%s sketch.py" % sys.argv[0]
+        sys.exit(0)
+    else:
+        GLib.threads_init()
+        gt = GtkApp(sys.argv[1])
+        gt._watchthread.start()
+        Gdk.threads_enter()
+        Gtk.main()
+        Gdk.threads_leave()
  
 if __name__ == "__main__":
     sys.exit(main()) 
