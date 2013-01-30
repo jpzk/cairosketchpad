@@ -25,6 +25,7 @@ import sys
 import time
 import threading
 import os
+import argparse
 
 # Python/Cairo Live Coding Sketchpad
 
@@ -86,16 +87,15 @@ class GtkApp():
         Gtk.main_quit()
 
 def main():
-    if(len(sys.argv) < 2):
-        print "%s sketch.py" % sys.argv[0]
-        sys.exit(0)
-    else:
-        GLib.threads_init()
-        gt = GtkApp(sys.argv[1])
-        gt._watchthread.start()
-        Gdk.threads_enter()
-        Gtk.main()
-        Gdk.threads_leave()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('sketch', help='run a livecoding sketch')
+    args = parser.parse_args()
+    GLib.threads_init()
+    gt = GtkApp(args.sketch)
+    gt._watchthread.start()
+    Gdk.threads_enter()
+    Gtk.main()
+    Gdk.threads_leave()
  
 if __name__ == "__main__":
     sys.exit(main()) 
