@@ -1,12 +1,33 @@
+#!/bin/env python
+
+''' 
+This file is part of cairo-sketchpad.
+
+Copyright 2013, Jendrik Poloczek
+
+cairo-sketchpad is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as published
+by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+cairo-sketchpad is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+cairo-sketchpad.  If not, see <http://www.gnu.org/licenses/>.
+'''
+
 from gi.repository import Gtk, GLib,  Gdk, cairo 
 import math
 import sys
-import sketch 
 import time
 import threading
 import os
+import argparse
 
-# Python/Cairo Livecoding in 100 Lines of Code
+# Python/Cairo Live Coding Sketchpad
 
 WATCH_IDLE_TIME = 1
 WIDTH = 600
@@ -50,13 +71,13 @@ class Livecode(Gtk.DrawingArea):
         self._mod.draw(cr,w, h)
 
 class GtkApp():
-    def __init__(self, filename):
+    def __init__(self, filename):  
         self._mod = __import__(filename.split('.')[0])
         self._livecode = Livecode(self._mod)
         self._watchthread = WatchThread(self._livecode, filename, self._mod)
 
         window = Gtk.Window()
-        window.set_title ("mini-live on %s" % filename)
+        window.set_title ("cairo-sketchpad on %s" % filename)
         window.add(self._livecode)
         window.show_all()
         window.connect_after('destroy', self._destroy)
@@ -66,12 +87,28 @@ class GtkApp():
         Gtk.main_quit()
 
 def main():
-    GLib.threads_init()
-    gt = GtkApp(sys.argv[1])
-    gt._watchthread.start()
-    Gdk.threads_enter()
-    Gtk.main()
-    Gdk.threads_leave()
+    sys.path.append(os.getenv("PWD"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument('sketch', help = 'run a livecoding sketch')
+    parser.add_argument('--create', action = 'store_true', dest = 'create', default = False)    
+    args = parser.parse_args()
+
+    if(args.create):
+        head = "def draw(cr, width, height):\n"
+        body1 = " " * 4 + "cr.rectangle(width/2.0 - 50, height/2.0 - 50, 100, 100)\n"
+        body2 = " " * 4 + "cr.stroke()\n"
+        sketch_file = open(args.sketch, "w")
+        sketch_file.writelines([head, body1, body2])
+        sketch_file.close()
+        print "Created sketch: %s" % args.sketch 
+
+    else:
+        GLib.threads_init()
+        gt = GtkApp(args.sketch)
+        gt._watchthread.start()
+        Gdk.threads_enter()
+        Gtk.main()
+        Gdk.threads_leave()
  
 if __name__ == "__main__":
     sys.exit(main()) 
