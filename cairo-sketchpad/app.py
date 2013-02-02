@@ -88,14 +88,26 @@ class GtkApp():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('sketch', help='run a livecoding sketch')
+    parser.add_argument('sketch', help = 'run a livecoding sketch')
+    parser.add_argument('--create', action = 'store_true', dest = 'create', default = False)    
     args = parser.parse_args()
-    GLib.threads_init()
-    gt = GtkApp(args.sketch)
-    gt._watchthread.start()
-    Gdk.threads_enter()
-    Gtk.main()
-    Gdk.threads_leave()
+
+    if(args.create):
+        head = "def draw(cr, width, height):\n"
+        body1 = " " * 4 + "cr.rectangle(width/2.0 - 50, height/2.0 - 50, 100, 100)\n"
+        body2 = " " * 4 + "cr.stroke()\n"
+        sketch_file = open(args.sketch, "w")
+        sketch_file.writelines([head, body1, body2])
+        sketch_file.close()
+        print "Created sketch: %s" % args.sketch 
+
+    else:
+        GLib.threads_init()
+        gt = GtkApp(args.sketch)
+        gt._watchthread.start()
+        Gdk.threads_enter()
+        Gtk.main()
+        Gdk.threads_leave()
  
 if __name__ == "__main__":
     sys.exit(main()) 
