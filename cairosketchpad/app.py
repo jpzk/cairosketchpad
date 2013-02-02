@@ -71,7 +71,7 @@ class Livecode(Gtk.DrawingArea):
         self._mod.draw(cr,w, h)
 
 class GtkApp():
-    def __init__(self, filename):
+    def __init__(self, filename):  
         self._mod = __import__(filename.split('.')[0])
         self._livecode = Livecode(self._mod)
         self._watchthread = WatchThread(self._livecode, filename, self._mod)
@@ -87,6 +87,7 @@ class GtkApp():
         Gtk.main_quit()
 
 def main():
+    sys.path.append(os.getenv("PWD"))
     parser = argparse.ArgumentParser()
     parser.add_argument('sketch', help = 'run a livecoding sketch')
     parser.add_argument('--create', action = 'store_true', dest = 'create', default = False)    

@@ -10,7 +10,7 @@ os.environ['COPYFILE_DISABLE'] = 'true'
 def autosetup():
 	from setuptools import setup, find_packages
 	return setup(
-		name			= "cairo-sketchpad",
+		name			= "cairosketchpad",
 		version			= "0.1",
 		
 		include_package_data = True,
@@ -19,7 +19,7 @@ def autosetup():
 		
 		entry_points	= {
 			'console_scripts': [
-				'cairo-sketchpad = cairo-sketchpad.app:main',
+				'cairosketchpad = cairosketchpad.app:main',
 			]
 		},
 	)
