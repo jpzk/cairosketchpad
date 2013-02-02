@@ -1,7 +1,7 @@
 cairosketchpad 0.1
 ==================
 
-cairosketchpad is a live coding sketchpad for Python/Cairo. See the following example!
+cairosketchpad is a live coding sketchpad for Python/Cairo. See the [screencast](https://www.youtube.com/watch?v=gmYdJuwVxYQ&feature=youtu.be) for an explanation.
 
 ## Example
 
